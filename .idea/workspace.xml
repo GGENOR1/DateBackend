@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="01c392b3-5cc2-44f8-98b3-f1d558b88d3b" name="Changes" comment="Init">
+      <change afterPath="$PROJECT_DIR$/app/migrations/env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Match/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Match/router.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/comands.txt" beforeDir="false" afterPath="$PROJECT_DIR$/comands.txt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FastAPI main" />
+        <option value="FastAPI test_main" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/app/Match/router.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2hjUvr9lw7JI3QZpJ0vUM4H1JyN" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Институт/Магистратура/1 курс/fastApiProject10&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Институт\Магистратура\1 курс\fastApiProject10\app" />
+      <recent name="D:\Институт\Магистратура\1 курс\fastApiProject10" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Институт\Магистратура\1 курс\fastApiProject10" />
+      <recent name="D:\Институт\Магистратура\1 курс\fastApiProject10\app" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="fastApiProject10" type="Python.FastAPI">
+      <option name="file" value="D:\Институт\Магистратура\1 курс\fastApiProject10\app\main.py" />
+      <module name="fastApiProject10" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="B:\MyAppData\Scripts\python.exe" />
+      <option name="SDK_NAME" value="Python 3.11 (MyAppData)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="01c392b3-5cc2-44f8-98b3-f1d558b88d3b" name="Changes" comment="" />
+      <created>1718107213750</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1718107213750</updated>
+      <workItem from="1718107222668" duration="1592000" />
+      <workItem from="1718108825096" duration="9453000" />
+      <workItem from="1718202862247" duration="769000" />
+      <workItem from="1718205898652" duration="2053000" />
+      <workItem from="1718300248024" duration="3420000" />
+      <workItem from="1718351948443" duration="23095000" />
+      <workItem from="1718543850494" duration="970000" />
+      <workItem from="1718577734500" duration="3202000" />
+      <workItem from="1718619458350" duration="9130000" />
+      <workItem from="1718638821413" duration="417000" />
+      <workItem from="1718710034303" duration="7154000" />
+      <workItem from="1718786863921" duration="14726000" />
+      <workItem from="1718901797016" duration="4191000" />
+      <workItem from="1719580638924" duration="599000" />
+      <workItem from="1719776146029" duration="4146000" />
+      <workItem from="1719829180381" duration="6563000" />
+      <workItem from="1719937400780" duration="7065000" />
+      <workItem from="1720015329404" duration="1161000" />
+      <workItem from="1720172871354" duration="5203000" />
+      <workItem from="1720280636727" duration="2720000" />
+      <workItem from="1720348780523" duration="1521000" />
+      <workItem from="1720472261324" duration="611000" />
+      <workItem from="1720519902380" duration="1282000" />
+      <workItem from="1720624058070" duration="6540000" />
+      <workItem from="1720723306127" duration="670000" />
+      <workItem from="1720810950271" duration="620000" />
+      <workItem from="1721040664374" duration="11087000" />
+      <workItem from="1721067229174" duration="392000" />
+      <workItem from="1721068489726" duration="6560000" />
+      <workItem from="1721158977698" duration="4326000" />
+      <workItem from="1721210930294" duration="6392000" />
+      <workItem from="1721400125361" duration="11376000" />
+      <workItem from="1721563327250" duration="1216000" />
+      <workItem from="1721668615633" duration="3759000" />
+      <workItem from="1721732415062" duration="6835000" />
+      <workItem from="1721846791916" duration="763000" />
+      <workItem from="1721908169880" duration="8498000" />
+      <workItem from="1722023882112" duration="878000" />
+      <workItem from="1722074814097" duration="20316000" />
+      <workItem from="1722247994934" duration="8673000" />
+      <workItem from="1722351176392" duration="16090000" />
+      <workItem from="1722418813441" duration="6279000" />
+      <workItem from="1722426985070" duration="884000" />
+    </task>
+    <task id="LOCAL-00001" summary="Init">
+      <option name="closed" value="true" />
+      <created>1722425583771</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1722425583771</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Init" />
+    <option name="LAST_COMMIT_MESSAGE" value="Init" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/fastApiProject10$test.coverage" NAME="test Coverage Results" MODIFIED="1718376944215" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/fastApiProject10$schema.coverage" NAME="schema Coverage Results" MODIFIED="1720634485250" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/Account" />
+    <SUITE FILE_PATH="coverage/fastApiProject10$MatchesRepository.coverage" NAME="MatchesRepository Coverage Results" MODIFIED="1722351259699" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/Match/Repository" />
+    <SUITE FILE_PATH="coverage/fastApiProject10$main.coverage" NAME="main Coverage Results" MODIFIED="1722421477824" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
+    <SUITE FILE_PATH="coverage/fastApiProject10$FakeDate.coverage" NAME="FakeDate Coverage Results" MODIFIED="1721756395134" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/fastApiProject10$router.coverage" NAME="router Coverage Results" MODIFIED="1718710059944" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/auth" />
+    <SUITE FILE_PATH="coverage/fastApiProject10$fastApiProject10.coverage" NAME="fastApiProject10 Coverage Results" MODIFIED="1720280640526" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+  </component>
+</project>
