@@ -115,13 +115,13 @@ class AccountDAO:
 
             result = await session.execute(query)
             user_accounts = result.fetchall()
-            print(f"{user_accounts=}")
+            # print(f"{user_accounts=}")
 
             if len(user_accounts) != len(user_ids):
                 raise HTTPException(status_code=404, detail="One or more users not found")
             find_users = []
             for user_row, match in zip(user_accounts, matches):
-                print(match[0])
+                # print(match[0])
                 user = user_row[0]
                 distance = user_row[1]  # Расстояние в метрах
 
@@ -135,9 +135,9 @@ class AccountDAO:
                 user_dict['distance'] = distance
                 user_dict['view'] = match[1]
                 find_users.append(user_dict)
-                print(f"{user_dict=}")
+                # print(f"{user_dict=}")
                 # Печать значения расстояния
-                print(f"Distance for user {user.user_id}: {distance} meters")
+                # print(f"Distance for user {user.user_id}: {distance} meters")
             # Запрос для поиска пользователей и расчета расстояния
             # query = select(
             #     UserDetails,
@@ -240,7 +240,7 @@ class AccountDAO:
 
         await session.commit()
         await session.refresh(existing_user)
-        return existing_user
+        return existing_user 
 
     # @staticmethod
     # async def find_nearby_accounts(latitude: float, longitude: float, session: AsyncSession):
@@ -421,7 +421,7 @@ class AccountDAO:
                 user_dict['distance'] = distance
                 users_with_geolocation.append(user_dict)
                 # Печать значения расстояния
-                print(f"Distance for user {user.user_id}: {distance} meters")
+                # print(f"Distance for user {user.user_id}: {distance} meters")
 
             return users_with_geolocation
 

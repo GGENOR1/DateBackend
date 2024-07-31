@@ -2,7 +2,9 @@
 
 uvicorn app.main:app --reload
 uvicorn app.main:app --host 192.168.56.1 --port 8000 --reload
-
+uvicorn app.main:app --host 192.168.0.102 --port 8000 --reload
+venv\Scripts\deactivate.bat
+venv\Scripts\activate.bat
 alembic revision --autogenerate -m "Init migration"
 alembic upgrade head
 Доработать сервис с пользователям

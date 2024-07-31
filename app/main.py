@@ -10,7 +10,7 @@ from app.Match.router import router as router_match
 from app.Websocket.websocket import router as websocket_router
 import uvicorn
 from app.Account.router import router as router_account
-
+from app.Notification.router import router as router_notification
 
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import FileResponse
@@ -30,6 +30,7 @@ app.include_router(router_users)
 app.include_router(router_auth)
 app.include_router(router_account)
 app.include_router(router_match)
+app.include_router(router_notification)
 # app.include_router(router_account)
 app.include_router(websocket_router)
 
@@ -39,6 +40,8 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 # Маппинг для настраиваемых путей
 custom_paths = {}
 
+app.add_event_handler("startup", handle_startup )
+app.add_event_handler("shutdown", handle_shutdown )
 
 @app.post("/upload/")
 async def upload_image(image: UploadFile = File(...), custom_path: str = None):

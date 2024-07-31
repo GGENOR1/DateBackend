@@ -5,6 +5,8 @@ from app.Connection.mongoDB import close_connect, connect_and_init_db
 
 
 
+
+
 async def handle_startup():
     init_mongo_future = connect_and_init_db()
     print(f"{init_mongo_future=}")

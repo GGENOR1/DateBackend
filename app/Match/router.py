@@ -12,6 +12,7 @@ from app.Match.Models.MatchClass import MatchModel
 from app.Match.Repository.LikeRepository import LikeRepository
 
 from app.Match.Repository.MatchesRepository import MatchesRepository
+from app.Notification.service import send_push_notification
 from app.Users.utils import get_async_session
 from app.auth.auth import check_user_role
 
@@ -92,7 +93,7 @@ async def find_by_match_users(
     if not matches:
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"detail": "Match not found"})
     accounts = await AccountDAO.find_by_ids_in_list(user.id, matches, session)
-    print(f"{accounts=}")
+    # print(f"{accounts=}")
     return accounts
 
 @router.get("/likes")
@@ -119,7 +120,7 @@ async def check_like_from_user(liked_user_id: int,
     return JSONResponse(status_code=status.HTTP_200_OK, content={
         "detail": "There is no like"})
 
-
+liked_user_expo_push_token = "wfawf",
 @router.post("/likes", dependencies=[Depends(check_user_role(["admin", "user"]))])
 async def add_like(liked_user_id: int,
                    request: Request,
@@ -142,8 +143,21 @@ async def add_like(liked_user_id: int,
         # если есть то создаем мэтч
         create_match = await repositoryMatches.create_post(current_id_user=user.id, liked_user_id=liked_user_id)
         # TODO: Добавить отправку уведомлений о мэтче
+        
+    # Отправляем уведомление о мэтче
+        await send_push_notification(
+            expo_push_token=liked_user_expo_push_token,
+            title="Новый мэтч!",
+            body=f"Вы и {user.username} теперь мэтч!",
+            data={"match_id": "sadc"}
+        )
         return JSONResponse(status_code=status.HTTP_201_CREATED, content={"detail": f"Match {create_match} is created"})
-    # TODO: Добавить отправку уведомлений о лайке
+    await send_push_notification(
+        expo_push_token=liked_user_expo_push_token,
+        title="Новый мэтч!",
+        body=f"Вы и {user.username} теперь мэтч!",
+        data={"match_id": "create_match"}
+        )
     return JSONResponse(status_code=status.HTTP_200_OK, content={"detail": f"Like {post_id} is created"})
 
 
