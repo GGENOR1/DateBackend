@@ -1,5 +1,6 @@
 from typing import List
 
+from aiokafka import AIOKafkaProducer
 from fastapi import APIRouter, Depends, Request, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
@@ -7,14 +8,15 @@ from starlette.responses import JSONResponse
 
 from app.Account.schema import UserAccountReturn, UserAccountReturnToListCard, UserAccountReturnToListMatches
 from app.Account.servise import AccountDAO
+from app.Chats.Chats.servise import ChatRepository
 from app.Match.Models.LikeClass import LikeModel
 from app.Match.Models.MatchClass import MatchModel
 from app.Match.Repository.LikeRepository import LikeRepository
-
+from app.Connection.kafkaController.controller import kafka_service
 from app.Match.Repository.MatchesRepository import MatchesRepository
-from app.Notification.service import send_push_notification
 from app.Users.utils import get_async_session
 from app.auth.auth import check_user_role
+from app.config import KAFKA_LIKES, KAFKA_MATCHES
 
 router = APIRouter(
     prefix="/Match",
@@ -120,12 +122,13 @@ async def check_like_from_user(liked_user_id: int,
     return JSONResponse(status_code=status.HTTP_200_OK, content={
         "detail": "There is no like"})
 
-liked_user_expo_push_token = "wfawf",
+
 @router.post("/likes", dependencies=[Depends(check_user_role(["admin", "user"]))])
 async def add_like(liked_user_id: int,
                    request: Request,
                    repositoryLike: LikeRepository = Depends(LikeRepository.get_instance),
                    repositoryMatches: MatchesRepository = Depends(MatchesRepository.get_instance),
+                   repositoryChats: ChatRepository = Depends(ChatRepository.get_instance),
                    session: AsyncSession = Depends(get_async_session)):
     user = request.state.user
     other_account = await AccountDAO.find_by_ids(user.id, liked_user_id, session)
@@ -137,27 +140,44 @@ async def add_like(liked_user_id: int,
     if check_likes:
         return JSONResponse(status_code=status.HTTP_409_CONFLICT, content={"detail": "There is a like"})
     post_id = await repositoryLike.create_post(current_id_user=user.id, liked_user_id=liked_user_id)
+    print(f"{post_id=}")
     #проверяем на наличие взаимных лайков
     checking_mutual_likes = await repositoryLike.find_by_user_and_liked_user(user_id=liked_user_id, liked_user_id=user.id)
+    print(f"{checking_mutual_likes=}")
     if checking_mutual_likes:
         # если есть то создаем мэтч
         create_match = await repositoryMatches.create_post(current_id_user=user.id, liked_user_id=liked_user_id)
-        # TODO: Добавить отправку уведомлений о мэтче
-        
+        create_chats = await repositoryChats.create(user.id, liked_user_id)
+        print(f"{create_match=}")
+        # TODO: Добавить запись в KAFKA уведомления о мэтче
+        # await send_kafka_message(producer,KAFKA_MATCHES,str(user.id), 
+        #                    {"match_id": 12, "user_id":12, "liked_user_id": 12, "status": "match_created"})
     # Отправляем уведомление о мэтче
-        await send_push_notification(
-            expo_push_token=liked_user_expo_push_token,
-            title="Новый мэтч!",
-            body=f"Вы и {user.username} теперь мэтч!",
-            data={"match_id": "sadc"}
+        # await send_push_notification("ExponentPushToken[oWADAWFAXFWADAWFAXFWADAWFAXFWADAWFAXCW]",
+        #   
+        #                               "test","test?")
+
+        await kafka_service.send_message (
+            KAFKA_MATCHES, str(post_id),
+            {
+                "user_id": user.id,
+                "liked_user_id": liked_user_id,
+                "status": "created"
+            }
         )
+    
         return JSONResponse(status_code=status.HTTP_201_CREATED, content={"detail": f"Match {create_match} is created"})
-    await send_push_notification(
-        expo_push_token=liked_user_expo_push_token,
-        title="Новый мэтч!",
-        body=f"Вы и {user.username} теперь мэтч!",
-        data={"match_id": "create_match"}
-        )
+    # await send_push_notification("ExponentPushToken[oWADAWFAXFWADAWFAXFWADAWFAXFWADAWFAXCW]",
+    #                                     "test","test1?")
+    await kafka_service.send_message(
+        KAFKA_LIKES, str(post_id),
+        {
+            "user_id": user.id,
+            "liked_user_id": liked_user_id,
+            "status": "created"
+        }
+    )
+    
     return JSONResponse(status_code=status.HTTP_200_OK, content={"detail": f"Like {post_id} is created"})
 
 
