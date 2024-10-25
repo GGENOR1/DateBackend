@@ -2,11 +2,11 @@
 
 uvicorn app.main:app --reload
 uvicorn app.main:app --host 192.168.56.1 --port 8000 --reload
-uvicorn app.main:app --host 192.168.0.102 --port 8000 --reload
+uvicorn main:app --host 192.168.0.102 --port 8000 --reload
 docker-compose up -d
 venv\Scripts\deactivate.bat
 venv\Scripts\activate.bat
-alembic revision --autogenerate -m "Init migration"
+alembic revision --autogenerate -m "replace column location "
 alembic upgrade head
 Доработать сервис с пользователям
 ----------------------------------------------------------------
@@ -14,4 +14,6 @@ docker exec -it kafka bash -c "kafka-topics --create --topic matches-topic --boo
 docker exec -it kafka bash -c "kafka-topics --create --topic likes-topic --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1"
 ----------------------------------------------------------------
 
-
+uvicorn app.application.api.main:create_app --reload
+uvicorn app.application.api.main:create_app --host 192.168.0.102 --port 8000 --reload
+uvicorn application.api.main:create_app --reload

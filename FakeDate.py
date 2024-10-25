@@ -3,7 +3,7 @@ import math
 
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 
-from app.Users.models import UserDetails, Users
+# from app.Users.models import UserDetails, Users
 
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, JSON, ARRAY, text
 from sqlalchemy.ext.declarative import declarative_base
@@ -11,12 +11,14 @@ from sqlalchemy.orm import sessionmaker, relationship
 from faker import Faker
 from geoalchemy2 import Geography
 import random
-
-from app.config import DB_USER, DB_HOST, DB_PORT, DB_NAME, DB_PASSWORD
+from app.settings import settings
+# from app.config import DB_USER, DB_HOST, DB_PORT, DB_NAME, DB_PASSWORD
+from app.domain.postgresql.models.accounts import UserDetailsORM, UserORM
 
 faker = Faker()
-DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-
+# settings = settings.POSTGRES_DB_URL
+DATABASE_URL = settings.POSTGRES_DB_URL
+print(f"{DATABASE_URL=}")
 
 engine = create_async_engine(DATABASE_URL)
 async_session_maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
@@ -36,7 +38,7 @@ async def insert_users(num_users):
         users = [generate_fake_user() for _ in range(num_users)]
 
         # Создаем записи пользователей
-        session.add_all([Users(**user) for user in users])
+        session.add_all([UserORM(**user) for user in users])
 
         await session.commit()
         print(f"Добавлено {num_users} пользователей.")
@@ -44,7 +46,7 @@ async def insert_users(num_users):
 
 def generate_fake_user_details(user_id):
     tags = ["Art", "Music", "Technologies", "Films", "Sport", "Test"]
-    return UserDetails(
+    return UserDetailsORM(
         user_id=user_id,
         first_name=faker.first_name(),
         last_name=faker.last_name(),
@@ -144,6 +146,6 @@ async def update_geolocation():
             await session.commit()
 
 
-# asyncio.run(insert_users(40))
+# asyncio.run(insert_users(100))
 # asyncio.run(insert_user_details())
 asyncio.run(update_geolocation())
