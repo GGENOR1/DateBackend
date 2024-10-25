@@ -16,6 +16,7 @@
 #         result = await session.execute(select(Users).filter_by(id=user_id))
 #         user = result.scalars().first()
 #         return user
+import asyncio
 from math import cos, radians, sin, atan2, sqrt
 from typing import List, Dict, Tuple
 
@@ -23,7 +24,7 @@ from fastapi.encoders import jsonable_encoder
 # from shapely import Point
 from shapely.geometry import shape, Point
 
-from app.Account.schema import Geolocation
+from app.Account.schema import Geolocation, UserAccountReturnToChat
 from app.Users.models import UserDetails
 
 from geoalchemy2 import WKTElement, WKBElement
@@ -77,7 +78,35 @@ class AccountDAO:
             return user_account
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+    # @staticmethod
+    # async def find_by_id(user_id: int, session: AsyncSession) -> UserAccountReturnToChat:
+    #     try:
+    #         async with session.no_autoflush:
+    #             query = select(UserDetails).filter_by(user_id=user_id)
+    #             result = await session.execute(query)
+    #             user_account = result.scalars().first()
 
+    #             if not user_account:
+    #                 raise HTTPException(status_code=404, detail="User not found")
+
+    #             # Декодирование геолокации
+    #             geolocation = None
+    #             if user_account.geolocation:
+    #                 wkb_geom = user_account.geolocation
+    #                 point = to_shape(wkb_geom)
+    #                 geolocation = Geolocation(latitude=point.y, longitude=point.x)
+
+    #             return UserAccountReturnToChat(
+    #                 user_id=user_account.user_id,
+    #                 first_name=user_account.first_name,
+    #                 last_name=user_account.last_name,
+    #                 geolocation=geolocation
+    #             )
+    #     except HTTPException:
+    #         raise
+    #     except Exception as e:
+    #         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+    
     @staticmethod
     async def find_by_ids(user_id1: int, user_id2: int, session: AsyncSession):
         try:
@@ -101,6 +130,7 @@ class AccountDAO:
     @staticmethod
     async def find_by_ids_in_list(current_user_id : int, matches: List[Tuple[bool,int]], session: AsyncSession):
         try:
+            print(f"{matches=}")
             user_ids = [match[0] for match in matches]
             print(f"{user_ids}")
             query = select(UserDetails).filter_by(user_id=current_user_id)
@@ -115,13 +145,13 @@ class AccountDAO:
 
             result = await session.execute(query)
             user_accounts = result.fetchall()
-            print(f"{user_accounts=}")
+            # print(f"{user_accounts=}")
 
             if len(user_accounts) != len(user_ids):
                 raise HTTPException(status_code=404, detail="One or more users not found")
             find_users = []
             for user_row, match in zip(user_accounts, matches):
-                print(match[0])
+                # print(match[0])
                 user = user_row[0]
                 distance = user_row[1]  # Расстояние в метрах
 
@@ -135,45 +165,12 @@ class AccountDAO:
                 user_dict['distance'] = distance
                 user_dict['view'] = match[1]
                 find_users.append(user_dict)
-                print(f"{user_dict=}")
-                # Печать значения расстояния
-                print(f"Distance for user {user.user_id}: {distance} meters")
-            # Запрос для поиска пользователей и расчета расстояния
-            # query = select(
-            #     UserDetails,
-            #     func.ST_Distance(UserDetails.geolocation, current_user_location_wkb).label('distance')
-            # ).filter(
-            #     UserDetails.user_id.in_(user_ids)
-            # ).order_by('distance')
-            #
-            # result = await session.execute(query)
-            # user_accounts = result.fetchall()
-            #
-            # if len(user_accounts) != len(user_ids):
-            #     raise HTTPException(status_code=404, detail="One or more users not found")
-            #
-            # users_with_geolocation = []
-            # for user_row in user_accounts:
-            #     user = user_row[0]
-            #     distance = user_row[1]  # Расстояние в метрах
-            #
-            #     # Преобразование WKB в Shapely объект
-            #     wkb_geom = user.geolocation
-            #     point = to_shape(wkb_geom)
-            #     user_geolocation = Geolocation(latitude=point.y, longitude=point.x)
-            #
-            #     user_dict = user.__dict__.copy()
-            #     user_dict['geolocation'] = user_geolocation
-            #     user_dict['distance'] = distance
-            #
-            #     users_with_geolocation.append(user_dict)
-            #
-            #     # Печать значения расстояния
-            #     print(f"Distance for user {user.user_id}: {distance} meters")
+    
 
             return find_users
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+    
     @staticmethod
     async def create_user(user_id: int, user_data: dict, session: AsyncSession):
         new_user = UserDetails(
@@ -240,8 +237,49 @@ class AccountDAO:
 
         await session.commit()
         await session.refresh(existing_user)
-        return existing_user
+        return existing_user 
+    
+    @staticmethod
+    async def find_by_ids_in_list_v2(current_user_id : int, matches: List[Tuple[bool,int]], session: AsyncSession):
+        try:
+            # print(f"{matches=}")
+            user_ids = [match[0] for match in matches]
+            # print(f"{user_ids}")
+            query = select(UserDetails).filter_by(user_id=current_user_id)
+            result = await session.execute(query)
+            current_user_account = result.scalars().first()
+            query = (
+            select(
+                UserDetails.first_name,
+                UserDetails.last_name,
+                UserDetails.user_id,
+            )
+            .filter(UserDetails.user_id.in_(user_ids))
+        )
 
+            result = await session.execute(query)
+            user_accounts = result.fetchall()
+            # print(f"{user_accounts=}")
+
+            if len(user_accounts) != len(user_ids):
+                raise HTTPException(status_code=404, detail="One or more users not found")
+            find_users = []
+            for user_row, match in zip(user_accounts, matches):
+                first_name = user_row.first_name
+                last_name = user_row.last_name
+                user_id = user_row.user_id
+                # Создаем словарь с нужными данными
+                user_data = {
+                    "user_id": user_id,
+                    'first_name': first_name,
+                    'last_name': last_name,
+                }
+                find_users.append(user_data)
+    
+
+            return find_users
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
     # @staticmethod
     # async def find_nearby_accounts(latitude: float, longitude: float, session: AsyncSession):
     #     # Преобразуем целевые координаты в географическую точку
@@ -421,7 +459,7 @@ class AccountDAO:
                 user_dict['distance'] = distance
                 users_with_geolocation.append(user_dict)
                 # Печать значения расстояния
-                print(f"Distance for user {user.user_id}: {distance} meters")
+                # print(f"Distance for user {user.user_id}: {distance} meters")
 
             return users_with_geolocation
 

@@ -18,6 +18,13 @@ async def get_db_collections_likes() -> AsyncIOMotorCollection:
     print(MONGO_DB)
     return db_client["Match"]["Likes"]
 
+async def get_db_collections_chats() -> AsyncIOMotorCollection:
+    print(MONGO_DB)
+    return db_client["Chats"]["Chats"]
+
+async def get_db_collections_messages() -> AsyncIOMotorCollection:
+    print(MONGO_DB)
+    return db_client["Chats"]["Messages"]
 
 async def connect_and_init_db():
     global db_client

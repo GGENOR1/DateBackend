@@ -19,6 +19,10 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 class CustomHTTPBearer(HTTPBearer):
+
+    # Переношу все функции в оотсветсвующий класс
+    # использую контенер тут для вызова данных функций
+    # куда вынести данный класс - надо разобраться 
     async def __call__(
             self, request: Request, session: AsyncSession = Depends(get_async_session)
     ) -> Optional[HTTPAuthorizationCredentials]:
@@ -28,17 +32,10 @@ class CustomHTTPBearer(HTTPBearer):
             payload = jwt.decode(res.credentials, SECRET_KEY, algorithms=["HS256"])
 
             user = await UsersDAO.find_by_id(int(payload["sub"]), session)
-            request.state.user = user
+            if user is None:
+                raise HTTPException(401, "User not found")
             print(user.id)
             print(f"Состояние пользователя {request.state.user}")
-            #
-            # # Проверяем доступ к end-point
-            # roles = await UsersDAO.get_user_roles(int(payload["sub"]), session)
-            # print(f" Текущая роль пользоваителя: {roles}")
-            # print(self.has_required_role(roles.name))
-            # if not self.has_required_role(roles.name):
-            #     raise HTTPException(403, "Insufficient permissions")
-            print()
             return payload
         except jwt.ExpiredSignatureError:
             print("Ошибка 1")
@@ -46,32 +43,6 @@ class CustomHTTPBearer(HTTPBearer):
         except jwt.InvalidTokenError:
             print("Ошибка 2")
             raise HTTPException(401, "Token invalid")
-
-
-
-# def check_user_role(required_role: list = None):
-#     async def _check_user_role(bearer_token: HTTPBearer = Depends(CustomHTTPBearer()),session: AsyncSession = Depends(get_async_session)):
-#         print(bearer_token)
-#         try:
-#             roles = await UsersDAO.get_user_roles(bearer_token["sub"], session)  # Получение ролей пользователя
-#             print(roles)
-#             if roles.name in required_role:
-#                 return True
-#             elif not required_role:
-#                 raise HTTPException(status_code=403, detail="permissions not allowed")
-#
-#             raise HTTPException(status_code=403, detail="Insufficient permissions")
-#
-#         except jwt.ExpiredSignatureError:
-#             raise HTTPException(status_code=401, detail="Token is expired")
-#
-#         except jwt.InvalidTokenError:
-#             raise HTTPException(status_code=401, detail="Invalid token")
-#
-#         except Exception as e:
-#             raise HTTPException(status_code=500, detail=str(e))
-#
-#     return _check_user_role
 
 
 def check_user_role(required_role: list = None):

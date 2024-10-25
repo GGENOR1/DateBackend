@@ -79,6 +79,13 @@ async def getAccountUser(id: int, request: Request, session: AsyncSession = Depe
     print(f"{user_account=}")
     return user_account
 
+@router.get("/get_id_account", dependencies=[Depends(check_user_role(["admin", "user"]))] )
+async def get_account_id(request: Request, session: AsyncSession = Depends(get_async_session)) -> int:
+    user = request.state.user
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user.id
+
 
 @router.post("/createUser", dependencies=[Depends(check_user_role(["admin", "user"]))],
              response_model=UserAccountReturn)

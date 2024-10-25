@@ -93,3 +93,12 @@ class UserAccountUpdate(BaseModel):
 
     class Config:
         orm_mode = True
+
+class UserAccountReturnToChat(BaseModel):
+    user_id: Optional[int] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+
+    
+    class Config:
+        orm_mode = True
