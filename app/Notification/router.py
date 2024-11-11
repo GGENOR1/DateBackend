@@ -9,7 +9,7 @@ router = APIRouter(
     tags=["Notifications"],
 )
 
-# ExponentPushToken[oUPG34DCUgYctZ4djP0PQ2]
+
 #TODO: при проверке наличия взимного лайка, если имеются а Мэтча нет, надо создавать его и отправлять уведомления
 @router.post("/matches")
 async def send_push_notificationto_to_server():

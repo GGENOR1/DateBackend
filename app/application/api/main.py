@@ -45,7 +45,7 @@ def create_app() -> FastAPI:
     )
     app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Или перечислите допустимые домены
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],  # Разрешить все методы: POST, GET, OPTIONS и т.д.
     allow_headers=["*"],  # Разрешить все заголовки

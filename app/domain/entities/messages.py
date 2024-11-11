@@ -113,8 +113,13 @@ class Chat(BaseEntity):
             ),
         )
 
-    def delete(self):
-        self.is_deleted = True
+    def delete(self, user_id: int):
+        # self.is_deleted = True
+        if not self.delete_by_first:
+            self.delete_by_first = user_id
+        else: 
+            self.delete_by_second = user_id
+        
         self.register_event(ChatDeletedEvent(chat_oid=self.oid))
 
     # TODO: Посмотреть что и как

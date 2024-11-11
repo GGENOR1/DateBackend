@@ -108,9 +108,19 @@ class MongoDBChatsRepository(BaseChatsRepository, BaseMongoDBRepository):
                 }
             }
         )
+    async def delete_chat_by_oid(self, chat: Chat) -> None:
+        await self._collection.update_one(
+        {'oid': chat.oid},
+        {
+            '$set': {
+            'delete_by_first': chat.delete_by_first,
+            'delete_by_second': chat.delete_by_second,
+                }
+            }
+        )
 
-    async def delete_chat_by_oid(self, chat_oid: str) -> None:
-        await self._collection.delete_one({'oid': chat_oid})
+    # async def delete_chat_by_oid(self, chat_oid: str) -> None:
+    #     await self._collection.delete_one({'oid': chat_oid})
 
     async def add_telegram_listener(self, chat_oid: str, telegram_chat_id: str):
         await self._collection.update_one({'oid': chat_oid}, {'$push': {'listeners': telegram_chat_id}})
@@ -152,6 +162,31 @@ class MongoDBMessagesRepository(BaseMessagesRepository, BaseMongoDBRepository):
     })
         return count
     
+    
+    async def delete_all_message_by_user(self, chat_oid: str, user_id: int) -> None:
+        # Формируем условие обновления для MongoDB
+        update_filter = {'chat_oid': chat_oid}
+    
+
+        # Если user_id совпадает с sender_id, обновляем visibility_sender
+        update_fields_sender = {'visibility_sender': False}
+
+        # Если user_id совпадает с recipient_id, обновляем visibility_recipient
+        update_fields_recipient = {'visibility_recipient': False}
+
+        # Используем `$set` для изменения поля видимости
+        await self._collection.update_many(
+            {**update_filter, 'sender_id': user_id},  # Фильтр для sender_id
+            {'$set': update_fields_sender}
+        )
+
+        await self._collection.update_many(
+            {**update_filter, 'recipient_id': user_id},  # Фильтр для recipient_id
+            {'$set': update_fields_recipient}
+        )
+        
+
+
     async def get_message(self, message_oid: str) -> Message | None:
         message_document = await self._collection.find_one(filter={'oid': message_oid})
 

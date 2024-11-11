@@ -2,7 +2,7 @@ from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 
-from app.MailServices.servis import generate_confirmation_code, send_confirmation_email
+from app.MailServices.service import generate_confirmation_code, send_confirmation_email
 from app.Redis.servise import get_from_cache, set_in_cache
 from app.Users.dependecies import get_current_user
 from app.Users.models import Users

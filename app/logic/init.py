@@ -249,6 +249,7 @@ def _init_container() -> Container:
         delete_chat_handler = DeleteChatCommandHandler(
             _mediator=mediator,
             chats_repository=container.resolve(BaseChatsRepository),
+            messages_repository=container.resolve(BaseMessagesRepository)
         )
 
         

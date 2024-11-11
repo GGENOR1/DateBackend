@@ -57,8 +57,21 @@ class BaseChatsRepository(ABC):
         """
         ...
 
+    # @abstractmethod
+    # async def delete_chat_by_oid(self, chat_oid: str) -> None:
+    #     """Удаление чата (не физическое)
+
+    #     Args:
+    #         chat_oid (str): oid чата
+    #     """
+    #     ...
     @abstractmethod
-    async def delete_chat_by_oid(self, chat_oid: str) -> None:
+    async def delete_chat_by_oid(self, chat: Chat) -> None:
+        """Удаление чата (не физическое)
+
+        Args:
+            chat (str): Чат
+        """
         ...
 
     @abstractmethod
@@ -116,5 +129,16 @@ class BaseMessagesRepository(ABC):
 
         Returns:
             int: Колличество непрочтенных сообщений
+        """
+        ...
+
+
+    @abstractmethod
+    async def delete_all_message_by_user(self, chat_oid: str, user_id: int):
+        """Удаление сообщений у пользователя
+
+        Args:
+            chat_oid (str): oid чата
+            user_id (int): id пользователя
         """
         ...
