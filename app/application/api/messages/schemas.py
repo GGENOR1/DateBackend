@@ -98,8 +98,8 @@ class ChatDetailSchema(BaseModel):
     oid: str
     created_at: datetime
     updated_at: datetime
-    delete_by_first: bool
-    delete_by_second: bool
+    delete_by_first: bool | int
+    delete_by_second: bool | int
     participants: List[ParticipantDetailSchema]
     last_message: Optional[MessageFromChat]
     unread_count_messages: Optional[int]
@@ -163,7 +163,7 @@ class ChatDetailSchema(BaseModel):
         print(f"само последнее сообшение при получении всех чатов {chat}")
         last_message = (
         MessageFromChat(
-            
+
             chat_oid=chat.oid,
             text=chat.text,
             sender_id=chat.sender_id,

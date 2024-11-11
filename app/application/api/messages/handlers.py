@@ -164,7 +164,7 @@ async def get_chat_messages_handler(
         items=[MessageDetailSchema.from_entity(message) for message in messages],
     )
 
-# TODO: 1) Проверять удлен ли чат и отдавать
+# TODO: 1) Проверять удален ли чат и отдавать
 @router.get(
     '/',
     dependencies=[Depends(check_user_role(["admin", "user"]))],
@@ -227,12 +227,33 @@ async def get_all_chats_by_user_handler(
 @router.delete(
     '/{chat_oid}/',
     status_code=status.HTTP_204_NO_CONTENT,
-    summary='Delete chat after conversation ends',
-    description='Deletes chat by provided "chat_oid"',
+    summary='Удаляет чат только у текущего пользователя',
+    description='Удаляет чат только у текущего пользователя на основе "chat_oid"',
+    dependencies=[Depends(check_user_role(["admin", "user"]))],
 )
 async def delete_chat_handler(
+    request: Request,
     chat_oid: str,
     container: Container = Depends(init_container),
+) -> None:
+    mediator: Mediator = container.resolve(Mediator)
+
+    try:
+        await mediator.handle_command(DeleteChatCommand(chat_oid=chat_oid, user_id=request.state.user.id))
+    except ApplicationException as exception:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={'error': exception.message})
+
+@router.delete(
+    '/{chat_oid}/all',
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary='Удаляет чат у обоих пользователей',
+    description='Удаляет чат только у обоих пользователей на основе "chat_oid"',
+    dependencies=[Depends(check_user_role(["admin", "user"]))],
+)
+async def delete_chat__all_handler(
+    chat_oid: str,
+    container: Container = Depends(init_container),
+
 ) -> None:
     mediator: Mediator = container.resolve(Mediator)
 

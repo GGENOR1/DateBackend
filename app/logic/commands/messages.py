@@ -91,12 +91,14 @@ class CreateMessageCommandHandler(CommandHandler[CreateMessageCommand, Chat]):
 
 @dataclass(frozen=True)
 class DeleteChatCommand(BaseCommand):
+    user_id: int
     chat_oid: str
 
 
 @dataclass(frozen=True)
 class DeleteChatCommandHandler(CommandHandler[DeleteChatCommand, None]):
     chats_repository: BaseChatsRepository
+    messages_repository: BaseMessagesRepository
 
     async def handle(self, command: DeleteChatCommand) -> None:
         chat = await self.chats_repository.get_chat_by_oid(oid=command.chat_oid)
@@ -104,9 +106,19 @@ class DeleteChatCommandHandler(CommandHandler[DeleteChatCommand, None]):
         if not chat:
             raise ChatNotFoundException(chat_oid=command.chat_oid)
 
-        await self.chats_repository.delete_chat_by_oid(chat_oid=command.chat_oid)
-        chat.delete()
-        await self._mediator.publish(chat.pull_events())
+        print(f"Чат при удалении только у пользователя {chat=}")
+        
+        
+        print(f"Чат при удалении только у пользователя после изменения флага {chat=}")
+        chat.delete(command.user_id)
+        print(f"Чат при удалении только у пользователя после изменения флага {chat=}")
+        print(f"Пользователи {chat.participants=}")
+        
+        await self.chats_repository.delete_chat_by_oid(chat=chat)
+        await self.messages_repository.delete_all_message_by_user(chat_oid=command.chat_oid, user_id=command.user_id)
+        #TODO: Посмотреть что отдает и разобраться почему веб сокет отдает ошибку отправки
+        # await self.messages_repository.delete
+        # await self._mediator.publish(chat.pull_events())
 
 
 @dataclass(frozen=True)

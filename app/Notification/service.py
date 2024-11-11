@@ -17,7 +17,7 @@ push_client = PushClient()
 
 #TODO: Изменить подход, принимать ID пользователя, брать данные из БД (токен) и отправлять
 
-async def send_push_notification( title: str, body: str, data: dict = None, expo_push_token: str = "ExponentPushToken[oUPG34DCUgYctZ4djP0PQ2]"):
+async def send_push_notification(expo_push_token: str, title: str, body: str, data: dict = None,  ):
     print(f"Push notification")
     if data is None:
         data = {}
@@ -44,19 +44,3 @@ async def send_push_notification( title: str, body: str, data: dict = None, expo
         print(f"{exc=}")
         raise HTTPException(status_code=500, detail=f"Error sending notification: {exc.errors}")
 
-# async def send_kafka_message(producer: AIOKafkaProducer, topic: str, key: str, value: dict):
-#     # Отправка сообщения
-#     await producer.send_and_wait(topic, key=key.encode('utf-8'), value=json.dumps(value).encode('utf-8'))
-#     print(f"Message sent to {topic}: {key} - {value}")
-
-# async def get_kafka_producer() -> AsyncGenerator[AIOKafkaProducer, None]:
-#     # Создание экземпляра продюсера
-#     producer = AIOKafkaProducer(
-#         bootstrap_servers=KAFKA_HOST,  # Замените на ваши настройки Kafka
-#         client_id= KAFKA_ID  # Замените на ваш клиент ID
-#     )
-#     await producer.start()  # Запуск продюсера
-#     try:
-#         yield producer  # Передача продюсера в контекстный менеджер
-#     finally:
-#         await producer.stop()  # Остановка продюсера после использования
